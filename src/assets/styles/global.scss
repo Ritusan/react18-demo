@@ -1,0 +1,11 @@
+$color: #fcf;
+body {
+  background-color: $color;
+  user-select: none;
+}
+img {
+  // 禁止拖动图片 
+  -webkit-user-drag: none;
+}
+
+// 首页的布局样式

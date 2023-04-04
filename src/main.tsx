@@ -11,11 +11,14 @@ import App from './App'
 import { BrowserRouter } from 'react-router-dom'
 // import Router from './router'
 // import './index.css'
+// 状态管理
+import { Provider } from 'react-redux'
+import store from '@/store'
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
-  <React.StrictMode>
+  <Provider store={store}>
     <BrowserRouter>
       <App />
     </BrowserRouter>
-  </React.StrictMode>,
+  </Provider>
 )

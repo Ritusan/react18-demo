@@ -1,17 +1,50 @@
-import React,{ useState } from 'react'
+import React,{ useState, useEffect } from 'react'
 import Comp1 from '@/components/Comp1'
 import Comp2 from '@/components/Comp2'
-import { Button } from 'antd'
+import { Button, message } from 'antd'
 import { VerticalRightOutlined } from '@ant-design/icons'
-import { Outlet, Link, useRoutes } from 'react-router-dom'
+import { Outlet, Link, useRoutes, useLocation, useNavigate } from 'react-router-dom'
 import router from './router'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 // import './App.css'
 
+function ToPage1() {
+  const navigateTo = useNavigate()
+  useEffect(() => {
+    navigateTo('/page1')
+  },[])
+  return <div></div>
+}
+
+function ToLogin() {
+  const navigateTo = useNavigate()
+  // 加载完这个组件之后实现跳转
+  useEffect(() => {
+    // 加载完组件之后执行
+    navigateTo('/login')
+    message.warning('您还没有登陆，请登陆后再访问！')
+  },[])
+  return <div></div>
+}
+
+function BeforeRouterEnter() {
+  const outlet = useRoutes(router)
+  const location = useLocation()
+  let token = localStorage.getItem('token')
+  if(location.pathname === '/login' && token) {
+    // 这里不能直接用useNavigate,因为BeforeRouterEnter是JSX组件
+    return <ToPage1 />
+  }
+  if(location.pathname  !== '/login' && !token) {
+    return <ToLogin />
+  }
+  return outlet
+}
+
 function App() {
   const [count, setCount] = useState(0)
-  const outlet = useRoutes(router)
+  
   return (
     <div className="App">
       {/* <div>
@@ -44,7 +77,8 @@ function App() {
       <Link to='/user '>User</Link>   */}
       {/* 占位符组件，类似于窗口，用来展示组件的，有点像vue中的router-view */}
       {/* <Outlet></Outlet> */}
-      {outlet}
+      {/* {outlet} */}
+      <BeforeRouterEnter />
     </div>
   )
 }

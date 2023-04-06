@@ -1,10 +1,12 @@
 import { ChangeEvent, useEffect, useState } from 'react'
-import { Input, Space, Button } from 'antd'
+import { Input, Space, Button, message } from 'antd'
 import styles from './login.module.scss'
 import initLoginBg from './init'
 import './login.less'
+import { useNavigate } from 'react-router-dom'
 
 const view = () => {
+  const navigateTo = useNavigate()
   // 加载完这个组件之后，加载背景
   useEffect(() => {
     initLoginBg()
@@ -28,6 +30,13 @@ const view = () => {
   }
   const gotoLogin = () => {
     console.log(usernameVal, passwordVal, captchaVal)
+    message.success('登陆成功')
+    // 保存token
+    // localStorage.setItem('token', loginApiRes.token)
+    // 跳转到page1
+    navigateTo('/page1')
+    // 删除本地uuid
+    // localStorage.removeItem('uuid')
   }
   return (
     <div className={styles.loginPage}>
@@ -51,7 +60,7 @@ const view = () => {
               </div>
             </div>
             <Button className='loginBtn' type="primary" block onClick={gotoLogin}>
-              Primary
+              登陆
             </Button>
           </Space>
         </div>
